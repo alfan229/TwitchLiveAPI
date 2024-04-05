@@ -4,29 +4,26 @@
     <title>OAuth Callback</title>
 </head>
 <body>
-    <h1>OAuth Callback Handler</h1>
     <script>
         function getAccessTokenFromUrl() {
-            const hash = window.location.hash.substr(1); // Get the fragment, excluding the '#'
-            const params = new URLSearchParams(hash); // Treat it as query string for parsing
-            const accessToken = params.get('access_token'); // Extract the access token
+            const hash = window.location.hash.substr(1); // Remove the '#' character
+            const params = new URLSearchParams(hash); // Treat it as a query string for parsing
+            const accessToken = params.get('access_token');
 
             if (accessToken) {
-                console.log('Access Token:', accessToken);
+                console.log("Access Token:", accessToken);
 
-                // Store the access token for later use (e.g., in localStorage for simplicity)
+                // Optionally, store the access token in localStorage or send to your server
                 localStorage.setItem('twitch_access_token', accessToken);
 
-                // Optionally, redirect the user or close the window
-                window.location.href = "http://localhost:3000/success"; // Redirect to another page
-                // window.close(); // Close the popup if it's no longer needed
+                // Optionally, redirect user away from the callback page
+                window.location.href = "http://localhost:3000/success"; // Change this URL as needed
             } else {
-                console.error('Access token not found in URL.');
+                console.log("Access token was not provided in URL.");
             }
         }
 
-        // Run the function when the page loads
-        window.onload = getAccessTokenFromUrl;
+        getAccessTokenFromUrl();
     </script>
 </body>
 </html>
