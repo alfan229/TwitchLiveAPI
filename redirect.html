@@ -1,40 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>OAuth Redirect</title>
-    <script>
-        // This function runs once the page is fully loaded.
-        window.onload = function() {
-            // Extract the hash (#) part of the URL, which contains the access token and other parameters.
-            const hash = window.location.hash.substring(1);
-            const params = new URLSearchParams(hash);
-
-            // Extract the access token from the parameters.
-            const accessToken = params.get('access_token');
-            const scope = params.get('scope'); // Optional: Extract additional parameters as needed.
-            const tokenType = params.get('token_type'); // Optional: Extract additional parameters as needed.
-
-            if (accessToken) {
-                // If there's an access token, post a message containing the token back to the opener window.
-                // This requires the extension's content or background script to be listening for messages.
-                window.opener.postMessage({
-                    type: 'twitchOAuthToken',
-                    accessToken: accessToken,
-                    scope: scope, // Optional: Include additional data as needed.
-                    tokenType: tokenType // Optional: Include additional data as needed.
-                }, "*"); // Consider specifying a more restrictive target origin for increased security.
-            } else {
-                // If no access token is found, send an error message.
-                window.opener.postMessage({ type: 'twitchOAuthError', error: 'Access Token not found' }, "*");
-            }
-
-            // Close the popup window after sending the message.
-            window.close();
-        };
-    </script>
+    <title>OAuth Callback</title>
 </head>
 <body>
-    <p>Please wait...</p>
+    <h1>OAuth Callback Handler</h1>
+    <script>
+        function getAccessTokenFromUrl() {
+            const hash = window.location.hash.substr(1); // Get the fragment, excluding the '#'
+            const params = new URLSearchParams(hash); // Treat it as query string for parsing
+            const accessToken = params.get('access_token'); // Extract the access token
+
+            if (accessToken) {
+                console.log('Access Token:', accessToken);
+
+                // Store the access token for later use (e.g., in localStorage for simplicity)
+                localStorage.setItem('twitch_access_token', accessToken);
+
+                // Optionally, redirect the user or close the window
+                window.location.href = "http://localhost:3000/success"; // Redirect to another page
+                // window.close(); // Close the popup if it's no longer needed
+            } else {
+                console.error('Access token not found in URL.');
+            }
+        }
+
+        // Run the function when the page loads
+        window.onload = getAccessTokenFromUrl;
+    </script>
 </body>
 </html>
