@@ -16,8 +16,9 @@
                 // Optionally, store the access token in localStorage or send to your server
                 localStorage.setItem('twitch_access_token', accessToken);
 
-                // Optionally, redirect user away from the callback page
-                window.location.href = "http://localhost:3000/success"; // Change this URL as needed
+                //// Optionally, redirect user away from the callback page
+                //window.location.href = "http://localhost:3000/success"; // Change this URL as needed
+                window.close(); // Closes the current window
             } else {
                 console.log("Access token was not provided in URL.");
             }
