@@ -19,7 +19,18 @@
                 //// Optionally, redirect user away from the callback page
                 //window.location.href = "http://localhost:3000/success"; // Change this URL as needed
                 window.close(); // Closes the current window
-            } else {
+
+                chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) 
+                {
+                    if (changeInfo.url && changeInfo.url.startsWith("https://alfan229.github.io/TwitchLiveAPI/redirect.html")) 
+                    {
+                        // Extract the access token if needed or simply close the tab/window
+                        chrome.windows.remove(tab.windowId);
+                    }
+                });
+            } 
+            else 
+            {
                 console.log("Access token was not provided in URL.");
             }
         }
