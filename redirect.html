@@ -18,7 +18,8 @@
 
                 //// Optionally, redirect user away from the callback page
                 //window.location.href = "chrome-extension://pnnonakgcjheiimmfjdanopbjhaglihc/options.html"; // Change this URL as needed
-                window.close(); // Closes the current window
+                //window.close(); // Closes the current window
+                open(location, '_self').close();
             } 
             else 
             {
